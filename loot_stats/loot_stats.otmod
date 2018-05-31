@@ -1,0 +1,14 @@
+Module
+  name: loot_stats
+  description: Module who make statistics of loot.
+  author: EgzoT
+  website: https://github.com/EgzoT/-OTClient-Mod-loot_stats
+  version: 1.0
+
+  autoload: true
+  autoload-priority: 1000
+  sandboxed: true
+  dependencies: [ game_interface ]
+  scripts: [ loot_stats ]
+  @onLoad: init()
+  @onUnload: terminate()

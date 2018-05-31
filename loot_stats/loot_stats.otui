@@ -1,0 +1,146 @@
+LootItemBox < UICheckBox
+  border-width: 1
+  border-color: #000000
+  color: #ffffff
+  text-align: center
+  text-offset: 0 30
+
+  Item
+    id: item
+    phantom: true
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    image-color: #ffffffff
+    margin-top: 5
+
+LootMonsterBox < UICheckBox
+  border-width: 1
+  border-color: #000000
+  color: #ffffff
+  text-align: center
+  text-offset: 0 40
+
+  Creature
+    id: creature
+    phantom: true
+    height: 40
+    width: 40
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    image-color: #ffffffff
+    margin-top: 5
+
+MainWindow
+  id: lootStatsMain
+  !text: tr('Loot Statistics')
+  size: 550 515
+  @onEscape: modules.loot_stats.toggle()
+
+  TabButton
+    id: monstersTab
+    !tooltip: tr("List of killed monsters and they loot.")
+    !text: tr('Monsters')
+    checked: true
+    anchors.left: parent.left
+    anchors.right: parent.horizontalCenter
+    anchors.top: parent.top
+    margin-right: 5
+    margin-top: 5
+
+  TabButton
+    id: allLootTab
+    !tooltip: tr("List of all dropped loot.")
+    !text: tr('All Loot')
+    anchors.left: parent.horizontalCenter
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin-left: 5
+    margin-top: 5
+
+  Panel
+    id: panelCreatureView
+    anchors.top: monstersTab.bottom
+    anchors.left: parent.left
+    height: 0
+    width: 250
+    margin-top: 5
+    visible: false
+
+    Creature
+      id: creatureView
+      phantom: true
+      height: 40
+      width: 40
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: parent.left
+      image-color: #ffffffff
+
+    Label
+      id: textCreatureView
+      text-align: left
+      color: #ffffff
+      height: 50
+      width: 205
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: creatureView.right
+      margin-left: 5
+
+  FlatPanel
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    anchors.bottom: closeButton.top
+    margin-top: 10
+    margin-bottom: 10
+
+    VerticalScrollBar
+      id: itemsPanelListScrollBar
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      step: 24
+      pixels-scroll: true
+
+    ScrollablePanel
+      id: itemsPanel
+      height: 400
+      anchors.left: parent.left
+      anchors.right: prev.left
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      vertical-scrollbar: itemsPanelListScrollBar
+      margin-left: 5
+      margin-right: 5
+      layout:
+        type: grid
+        cell-size: 160 90
+        flow: true
+        auto-spacing: true
+
+  Button
+    id: closeButton
+    !text: tr('Close')
+    width: 64
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: modules.loot_stats.toggle()
+
+  Button
+    id: clearAllButton
+    !text: tr('Clear all')
+    width: 64
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    @onClick: modules.loot_stats.clearAllUIAndTable()
+
+  Panel
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 5
+    height: 15
+    width: 150
+    
+    OptionCheckBox
+      id: showLootOnScreen
+      !text: tr('Show loot on screen')
+      @onMouseRelease: saveCheckboxIconsOnScreen()
