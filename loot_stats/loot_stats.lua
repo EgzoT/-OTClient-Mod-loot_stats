@@ -128,7 +128,7 @@ function loadClientVersionItems()
 
 		g_things.loadOtb('items_versions/'..version..'/items.otb')
 		g_things.loadXml('items_versions/'..version..'/items.xml')
-		parsedItemsXML = openItemsXML('mods/loot_stats/items_versions/'..version..'/items.xml')
+    parsedItemsXML = openItemsXML('loot_stats/items_versions/'..version..'/items.xml')
 
 		loadedVersionItems = version
 	end
@@ -280,7 +280,7 @@ end
 function openItemsXML(path)
   local tableWithItems = {}
 
-  local xml = io.open(g_resources.getWorkDir()..path, "rb")
+  local xml = io.open(g_resources.getRealPath()..path, "rb")
   local itemsXMLString = {}
 
   for line in xml:lines() do
