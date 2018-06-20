@@ -24,7 +24,7 @@ function init()
 
   monstersTab = lootStatsWindow:recursiveGetChildById('monstersTab')
   allLootTab = lootStatsWindow:recursiveGetChildById('allLootTab')
-  
+
   monstersTab.onMouseRelease = whenClickMonstersTab
   allLootTab.onMouseRelease = whenClickAllLootTab
 
@@ -41,7 +41,7 @@ function terminate()
   lootStatsButton = nil
   lootStatsWindow:destroy()
   lootStatsWindow = nil
-  
+
   itemsPanel = nil
 	monstersTab = nil
 	allLootTab = nil
@@ -98,7 +98,7 @@ end
 
 function loadClientVersionItems()
 	local version = g_game.getClientVersion()
-	
+
 	if version ~= loadedVersionItems then
 		if not g_resources.directoryExists('items_versions/'..version) then
 			pwarning("Directory: mods/loot_stats/items_versions/"..version.."/ doesn't exist!")
@@ -392,7 +392,7 @@ function formatUINumber(value, numbers, cutDigits)
   end
 
   local firstNonZeroPos = math.floor(math.log10(decimalPart)) + 1
-  
+
   local numberOfPoints = 1
   if cutDigits then
     numberOfPoints = math.pow(10, numbers - math.floor(math.log10(value)) - 1)
@@ -678,7 +678,7 @@ function clearAllUIAndTable()
 
     destroyLootAndMonsterItemsUI()
     itemsPanel:destroyChildren()
-    
+
     allLootTab:setOn(false)
     monstersTab:setOn(false)
     hideMonsterView()
@@ -686,7 +686,7 @@ function clearAllUIAndTable()
 
     layout:enableUpdates()
     layout:update()
-    
+
     saveOverWindow:destroy()
     saveOverWindow=nil
   end
@@ -776,6 +776,7 @@ function scheduleDisappearIcon(id)
     		mainScreenTab[a] = nil
     		addToMainScreenTab(nil)
     		refreshMainScreenTab()
+        break
     	end
     end
   end, 2000)
