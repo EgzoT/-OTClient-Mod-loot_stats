@@ -806,7 +806,7 @@ function refreshMainScreenTab()
     			end
 
 					lootIconOnScreen[c..a]:setVirtual(true)
-					lootIconOnScreen[c..a]:setX(actualX)
+					lootIconOnScreen[c..a]:setX(actualX + mapPanel:getX())
 					actualX = actualX + 32
 					lootIconOnScreen[c..a]:setY(actualY)
 					if d.count > 1 then
