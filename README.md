@@ -10,6 +10,9 @@ Show loot statistics and killed creatures.
 
 *This files you may find in map editors/servers etc.
 
+# Official thread
+[![OTLand](https://otland.net/styles/fracture/xenforo/xenFracture-logo.png)](https://otland.net/threads/otclient-mod-loot-stats.259075/)
+
 # How it's look like
 
 ![](https://dl.getdropbox.com/s/mwiwvh8klodcfgj/loot_stats_30-09-2017_R_2.png)
