@@ -3,7 +3,7 @@ Module
   description: Module who make statistics of loot.
   author: EgzoT
   website: https://github.com/EgzoT/-OTClient-Mod-loot_stats
-  version: 1.0.4
+  version: 1.0.5
 
   autoload: true
   autoload-priority: 1000
