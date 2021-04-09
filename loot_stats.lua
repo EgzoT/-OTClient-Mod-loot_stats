@@ -14,7 +14,7 @@ local topMenu = modules.client_topmenu.getTopMenu()
 g_ui.loadUI("loot_icons")
 
 function init()
-  lootStatsButton = modules.client_topmenu.addRightGameToggleButton('lootStatsButton', tr('Loot Stats'), '/loot_stats/img_loot_stats/loot_stats_img', toggle)
+  lootStatsButton = modules.client_topmenu.addRightGameToggleButton('lootStatsButton', tr('Loot Stats'), 'img_loot_stats/loot_stats_img', toggle)
   lootStatsButton:setOn(false)
 
   lootStatsWindow = g_ui.displayUI('loot_stats')
@@ -101,24 +101,24 @@ function loadClientVersionItems()
 
 	if version ~= loadedVersionItems then
 		if not g_resources.directoryExists('items_versions/'..version) then
-			pwarning("Directory: mods/loot_stats/items_versions/"..version.."/ doesn't exist!")
-			pwarning("Add "..version.." directory to mods/loot_stats/items_versions/ with correct version items.otb and items.xml!")
+			pwarning("Directory: items_versions/"..version.."/ doesn't exist!")
+			pwarning("Add "..version.." directory to items_versions/ with correct version items.otb and items.xml!")
 			loadedVersionItems = 0
 			g_modules.getModule('loot_stats'):unload()
 			modules.client_modulemanager.refreshLoadedModules()
 			return
 		end
 		if not g_resources.fileExists('items_versions/'..version..'/items.otb') then
-			pwarning("File: mods/loot_stats/items_versions/"..version.."/ doesn't exist!")
-			pwarning("Add correct version items.otb to mods/loot_stats/items_versions/"..version.."/!")
+			pwarning("File: items_versions/"..version.."/ doesn't exist!")
+			pwarning("Add correct version items.otb to items_versions/"..version.."/!")
 			loadedVersionItems = 0
 			g_modules.getModule('loot_stats'):unload()
 			modules.client_modulemanager.refreshLoadedModules()
 			return
 		end
 		if not g_resources.fileExists('items_versions/'..version..'/items.xml') then
-			pwarning("File: mods/loot_stats/items_versions/"..version.." doesn't exist!")
-			pwarning("Add correct version items.xml to mods/loot_stats/items_versions/"..version.."/!")
+			pwarning("File: items_versions/"..version.." doesn't exist!")
+			pwarning("Add correct version items.xml to items_versions/"..version.."/!")
 			loadedVersionItems = 0
 			g_modules.getModule('loot_stats'):unload()
 			modules.client_modulemanager.refreshLoadedModules()
@@ -128,7 +128,7 @@ function loadClientVersionItems()
 
 		g_things.loadOtb('items_versions/'..version..'/items.otb')
 		g_things.loadXml('items_versions/'..version..'/items.xml')
-    parsedItemsXML = openItemsXML('loot_stats/items_versions/'..version..'/items.xml')
+    parsedItemsXML = openItemsXML('items_versions/'..version..'/items.xml')
 
 		loadedVersionItems = version
 	end
@@ -222,7 +222,7 @@ function checkLootTextMessage(messageMode, message)
             lootToScreen[isPluralNameInLoot].count = 0
           end
           lootCheckerTable[lootMonsterName].loot[isPluralNameInLoot].count = lootCheckerTable[lootMonsterName].loot[isPluralNameInLoot].count + itemCount
-          lootToScreen[isPluralNameInLoot].count = lootToScreen[isPluralNameInLoot].count + itemCount --NEW TEST 1
+          lootToScreen[isPluralNameInLoot].count = lootToScreen[isPluralNameInLoot].count + itemCount
         else
           local pluralNameToSingular = convertPluralToSingular(itemWord)
           if pluralNameToSingular then
@@ -238,7 +238,7 @@ function checkLootTextMessage(messageMode, message)
               lootToScreen[pluralNameToSingular].count = 0
             end
             lootCheckerTable[lootMonsterName].loot[pluralNameToSingular].count = lootCheckerTable[lootMonsterName].loot[pluralNameToSingular].count + itemCount
-          	lootToScreen[pluralNameToSingular].count = lootToScreen[pluralNameToSingular].count + itemCount --NEW TEST
+          	lootToScreen[pluralNameToSingular].count = lootToScreen[pluralNameToSingular].count + itemCount
           else
             if not lootCheckerTable[lootMonsterName].loot[word] then
               lootCheckerTable[lootMonsterName].loot[word] = {}
@@ -280,7 +280,7 @@ end
 function openItemsXML(path)
   local tableWithItems = {}
 
-  local xml = io.open(g_resources.getRealPath()..path, "rb")
+  local xml = g_resources.readFileContents(path)
   local itemsXMLString = {}
 
   for line in xml:lines() do

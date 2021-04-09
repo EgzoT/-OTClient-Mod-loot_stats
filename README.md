@@ -4,14 +4,15 @@ Show loot statistics and killed creatures.
 
 # How to add?
 
-1) Add folder [loot_stats] to "mods" or "modules" folder (recommended "mods" folder) in your main OTClient folder.
+1) Add main folder to "mods" or "modules" folder (recommended "mods" folder) in your main OTClient folder or clone (git clone) repository to "mods" or "modules" folder (recommended "mods" folder) in your main OTClient folder.
 2) To folder items_versions add folder with version name (8.60 -> 860).
 3) Inside created folder add items.otb* and items.xml* files.
 
 *This files you may find in map editors/servers etc.
 
 # Official thread
-[![OTLand](https://otland.net/styles/fracture/xenforo/xenFracture-logo.png)](https://otland.net/threads/otclient-mod-loot-stats.259075/)
+
+## [OTLand - OTClient loot stats module](https://otland.net/threads/otclient-mod-loot-stats.259075/)
 
 # How it's look like
 
