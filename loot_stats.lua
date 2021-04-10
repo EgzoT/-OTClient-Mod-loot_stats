@@ -1,4 +1,9 @@
-dofile('itemsXML.lua')
+-- Imports
+dofile('ui/showLootOnScreen')
+dofile('itemsXML')
+
+-- Modules
+showLootOnScreen = ShowLootOnScreen()
 
 lootStatsButton = nil
 lootStatsWindow = nil
@@ -11,8 +16,6 @@ allLootTab = nil
 
 panelCreatureView = nil
 
-local mapPanel = modules.game_interface.getMapPanel()
-local topMenu = modules.client_topmenu.getTopMenu()
 g_ui.loadUI("loot_icons")
 
 function init()
@@ -51,6 +54,9 @@ function terminate()
 
   --terminate all systems
   terminateLootChecker()
+
+  -- Destroy created UI items on screen
+  showLootOnScreen:destroy()
 end
 
 function toggle()
@@ -268,7 +274,7 @@ function checkLootTextMessage(messageMode, message)
     end
 
     if lootStatsWindow:recursiveGetChildById('showLootOnScreen'):isChecked() then
-      addToMainScreenTab(lootToScreen)
+      showLootOnScreen:add(lootToScreen)
     end
     lootToScreen = {}
   end
@@ -698,108 +704,6 @@ end
 -------------------------------------------------
 --Show loot on screen----------------------------
 -------------------------------------------------
-
-local mainScreenTab = {}
-
-local tableDepth = 5 --later replace to top
-
-local cacheLastTime = {t = 0, i = 1}
-
-local lootIconOnScreen = {}
-
-function addToMainScreenTab(tab)
-	for i = 1, tableDepth do
-		mainScreenTab[i] = {}
-		if i + 1 <= tableDepth then
-			mainScreenTab[i] = mainScreenTab[i+1]
-		else
-			if tab ~= nil then
-				mainScreenTab[i].loot = tab
-				if g_clock.millis() == cacheLastTime.t then
-					mainScreenTab[i].id = g_clock.millis() * 100 + cacheLastTime.i
-					cacheLastTime.i = cacheLastTime.i + 1
-
-					--delete value after x time
-					scheduleDisappearIcon(mainScreenTab[i].id)
-				else
-					mainScreenTab[i].id = g_clock.millis()
-					cacheLastTime.t = g_clock.millis()
-					cacheLastTime.i = 1
-
-					--delete value after x time
-					scheduleDisappearIcon(mainScreenTab[i].id)
-				end
-			else
-				mainScreenTab[i] = nil
-			end
-		end
-	end
-
-	if tab == nil and table.size(mainScreenTab) then
-		mainScreenTab[#mainScreenTab] = nil
-	end
-
-	refreshMainScreenTab()
-end
-
-function scheduleDisappearIcon(id)
-	scheduleEvent(function()
-		for a,b in pairs(mainScreenTab) do
-    	if mainScreenTab[a].id == id then
-    		mainScreenTab[a] = nil
-    		addToMainScreenTab(nil)
-    		refreshMainScreenTab()
-        break
-    	end
-    end
-  end, 2000)
-end
-
-function refreshMainScreenTab()
-	destroyLootIconOnScreen()
-
-	local actualX = 0
-	local actualY = 0
-
-	if topMenu:isVisible() then
-		actualY = topMenu:getHeight()
-	end
-
-	for a,b in pairs(mainScreenTab) do
-		if actualY <= mapPanel:getHeight() - 32 then
-			for c,d in pairs(b.loot) do
-				if actualX <= mapPanel:getWidth() - 32 then
-					lootIconOnScreen[c..a] = g_ui.createWidget("LootIcon", mapPanel)
-
-					local findItemByName = g_things.findItemTypeByName(c)
-    			if findItemByName:getClientId() ~= 0 then
-      			lootIconOnScreen[c..a]:setItemId(findItemByName:getClientId())
-    			else
-      			lootIconOnScreen[c..a]:setItemId(3547)
-    			end
-
-					lootIconOnScreen[c..a]:setVirtual(true)
-					lootIconOnScreen[c..a]:setX(actualX + mapPanel:getX())
-					actualX = actualX + 32
-					lootIconOnScreen[c..a]:setY(actualY)
-					if d.count > 1 then
-						lootIconOnScreen[c..a]:setItemCount(d.count)
-					end
-				end
-			end
-		end
-
-		actualX = 0
-		actualY = actualY + 32
-	end
-end
-
-function destroyLootIconOnScreen()
-	for a,b in pairs(lootIconOnScreen) do
-		lootIconOnScreen[a]:destroy()
-		lootIconOnScreen[a] = nil
-	end
-end
 
 function saveCheckboxIconsOnScreen()
   if lootStatsWindow:recursiveGetChildById('showLootOnScreen'):isChecked() then
