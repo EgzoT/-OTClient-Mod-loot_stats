@@ -34,6 +34,7 @@ MainWindow
   id: lootStatsMain
   !text: tr('Loot Statistics')
   size: 550 515
+  focusable: false
   @onEscape: modules.loot_stats.toggle()
 
   TabButton
