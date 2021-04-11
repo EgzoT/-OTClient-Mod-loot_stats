@@ -1,83 +1,27 @@
 -- Imports
+dofile('ui/ui')
 dofile('ui/showLootOnScreen')
 dofile('systems/itemsXML')
 
 -- Modules
+ui = UI()
 showLootOnScreen = ShowLootOnScreen()
 
-lootStatsButton = nil
-lootStatsWindow = nil
-touchAttackList = nil
-
-itemsPanel = nil
-
-monstersTab = nil
-allLootTab = nil
-
-panelCreatureView = nil
-
-g_ui.loadUI("loot_icons")
-
 function init()
-  lootStatsButton = modules.client_topmenu.addRightGameToggleButton('lootStatsButton', tr('Loot Stats'), 'img_loot_stats/loot_stats_img', toggle)
-  lootStatsButton:setOn(false)
-
-  lootStatsWindow = g_ui.displayUI('loot_stats')
-  lootStatsWindow:setVisible(false)
-
-  itemsPanel = lootStatsWindow:recursiveGetChildById('itemsPanel')
-
-  monstersTab = lootStatsWindow:recursiveGetChildById('monstersTab')
-  allLootTab = lootStatsWindow:recursiveGetChildById('allLootTab')
-
-  monstersTab.onMouseRelease = whenClickMonstersTab
-  allLootTab.onMouseRelease = whenClickAllLootTab
-
-  panelCreatureView = lootStatsWindow:recursiveGetChildById('panelCreatureView')
-
-  lootStatsWindow:recursiveGetChildById('showLootOnScreen'):setChecked(g_settings.getBoolean('loot_stats_addIconsToScreen'))
+  ui:init()
 
   --init all systems
   initLootChecker()
 end
 
 function terminate()
-  lootStatsButton:destroy()
-  lootStatsButton = nil
-  lootStatsWindow:destroy()
-  lootStatsWindow = nil
-
-  itemsPanel = nil
-	monstersTab = nil
-	allLootTab = nil
-	panelCreatureView = nil
+  ui:terminate()
 
   --terminate all systems
   terminateLootChecker()
 
   -- Destroy created UI items on screen
   showLootOnScreen:destroy()
-end
-
-function toggle()
-  if lootStatsButton:isOn() then
-    lootStatsWindow:setVisible(false)
-    lootStatsButton:setOn(false)
-  else
-    lootStatsWindow:setVisible(true)
-    lootStatsButton:setOn(true)
-
-    refreshDataInUI()
-  end
-end
-
-function onMiniWindowClose()
-  lootStatsButton:setOn(false)
-end
-
-function clear()
-  local touchAttackList = lootStatsWindow:getChildById('contentsPanel')
-  touchAttackList:destroyChildren()
 end
 
 -------------------------------------------------
@@ -100,7 +44,7 @@ function initLootChecker()
 
   --Open monster tab as default
   actualVisibleTab.tab = 'monster'
-  monstersTab:setOn(true)
+  ui.elements.monstersTab:setOn(true)
 end
 
 function loadClientVersionItems()
@@ -273,13 +217,13 @@ function checkLootTextMessage(messageMode, message)
       end
     end
 
-    if lootStatsWindow:recursiveGetChildById('showLootOnScreen'):isChecked() then
+    if ui.elements.showLootOnScreen:isChecked() then
       showLootOnScreen:add(lootToScreen)
     end
     lootToScreen = {}
   end
 
-  if lootStatsWindow:isVisible() then
+  if ui.mainWindow:isVisible() then
 		refreshDataInUI()
 	end
 end
@@ -464,19 +408,19 @@ end
 -------------------------------------------------
 
 function showMonsterView(creature, text)
-  panelCreatureView:setHeight(40)
-  panelCreatureView:setVisible(true)
+  ui.elements.panelCreatureView:setHeight(40)
+  ui.elements.panelCreatureView:setVisible(true)
 
-  local ceatureView = panelCreatureView:getChildById('creatureView')
+  local ceatureView = ui.elements.panelCreatureView:getChildById('creatureView')
   ceatureView:setCreature(creature)
 
-  local creatureText = panelCreatureView:getChildById('textCreatureView')
+  local creatureText = ui.elements.panelCreatureView:getChildById('textCreatureView')
   creatureText:setText(text)
 end
 
 function hideMonsterView()
-  panelCreatureView:setHeight(0)
-  panelCreatureView:setVisible(false)
+  ui.elements.panelCreatureView:setHeight(0)
+  ui.elements.panelCreatureView:setVisible(false)
 end
 
 -------------------------------------------------
@@ -485,7 +429,7 @@ end
 
 function changeWhenClickWidget(self, mousePosition, mouseButton)
   if mouseButton == MouseLeftButton then
-    monstersTab:setOn(false)
+    ui.elements.monstersTab:setOn(false)
 
     showMonsterView(self:getChildById('creature'):getCreature(), self:getText())
 
@@ -503,8 +447,8 @@ end
 
 function whenClickMonstersTab(self, mousePosition, mouseButton)
   if mouseButton == MouseLeftButton then
-    allLootTab:setOn(false)
-    monstersTab:setOn(true)
+    ui.elements.allLootTab:setOn(false)
+    ui.elements.monstersTab:setOn(true)
     refreshLootMonsters()
     hideMonsterView()
   end
@@ -512,8 +456,8 @@ end
 
 function whenClickAllLootTab(self, mousePosition, mouseButton)
   if mouseButton == MouseLeftButton then
-    monstersTab:setOn(false)
-    allLootTab:setOn(true)
+    ui.elements.monstersTab:setOn(false)
+    ui.elements.allLootTab:setOn(true)
     refreshLootItems('*all')
     hideMonsterView()
   end
@@ -543,14 +487,14 @@ function refreshLootItems(monsterName)
   actualVisibleTab.tab = 'loot'
   actualVisibleTab.info = monsterName
 
-  local layout = itemsPanel:getLayout()
+  local layout = ui.elements.itemsPanel:getLayout()
   layout:disableUpdates()
 
   destroyLootAndMonsterItemsUI()
-  itemsPanel:destroyChildren()
+  ui.elements.itemsPanel:destroyChildren()
 
   for a,b in pairs(itemTable) do
-    tableWithLootItemsUI[a] = g_ui.createWidget('LootItemBox', itemsPanel)
+    tableWithLootItemsUI[a] = g_ui.createWidget('LootItemBox', ui.elements.itemsPanel)
 
     local text = a..'\n'..'Count: '..b.count
 
@@ -610,17 +554,17 @@ function refreshLootItems(monsterName)
 end
 
 function refreshLootMonsters()
-  local layout = itemsPanel:getLayout()
+  local layout = ui.elements.itemsPanel:getLayout()
   layout:disableUpdates()
 
   destroyLootAndMonsterItemsUI()
-  itemsPanel:destroyChildren()
+  ui.elements.itemsPanel:destroyChildren()
 
   actualVisibleTab.tab = 'monster'
   actualVisibleTab.info = 0
 
   for a,b in pairs(returnAllMonsters()) do
-    tableWithLootItemsUI[a] = g_ui.createWidget('LootMonsterBox', itemsPanel)
+    tableWithLootItemsUI[a] = g_ui.createWidget('LootMonsterBox', ui.elements.itemsPanel)
 
     local text = a..'\n'..'Count: '..b.count
 
@@ -652,14 +596,14 @@ end
 
 function clearAllUIAndTable()
   local yesCallback = function()
-    local layout = itemsPanel:getLayout()
+    local layout = ui.elements.itemsPanel:getLayout()
     layout:disableUpdates()
 
     destroyLootAndMonsterItemsUI()
-    itemsPanel:destroyChildren()
+    ui.elements.itemsPanel:destroyChildren()
 
-    allLootTab:setOn(false)
-    monstersTab:setOn(false)
+    ui.elements.allLootTab:setOn(false)
+    ui.elements.monstersTab:setOn(false)
     hideMonsterView()
     lootCheckerTable = {}
 
@@ -687,7 +631,7 @@ function refreshDataInUI()
 	if actualVisibleTab.tab == 'loot' then
   	refreshLootItems(actualVisibleTab.info)
   	if actualVisibleTab.info ~= '*all' then
-  		local creatureText = panelCreatureView:getChildById('textCreatureView')
+  		local creatureText = ui.elements.panelCreatureView:getChildById('textCreatureView')
 
   		local monster = returnAllMonsters()[actualVisibleTab.info]
   		local text = actualVisibleTab.info..'\n'..'Count: '..monster.count
@@ -706,7 +650,7 @@ end
 -------------------------------------------------
 
 function saveCheckboxIconsOnScreen()
-  if lootStatsWindow:recursiveGetChildById('showLootOnScreen'):isChecked() then
+  if ui.elements.showLootOnScreen:isChecked() then
     g_settings.set('loot_stats_addIconsToScreen', false)
   else
     g_settings.set('loot_stats_addIconsToScreen', true)

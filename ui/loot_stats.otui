@@ -35,7 +35,7 @@ MainWindow
   !text: tr('Loot Statistics')
   size: 550 515
   focusable: false
-  @onEscape: modules.loot_stats.toggle()
+  @onEscape: modules.loot_stats.ui.toggle()
 
   TabButton
     id: monstersTab
@@ -124,7 +124,7 @@ MainWindow
     width: 64
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    @onClick: modules.loot_stats.toggle()
+    @onClick: modules.loot_stats.ui.toggle()
 
   Button
     id: clearAllButton
