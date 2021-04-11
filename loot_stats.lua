@@ -1,6 +1,6 @@
 -- Imports
 dofile('ui/showLootOnScreen')
-dofile('itemsXML')
+dofile('systems/itemsXML')
 
 -- Modules
 showLootOnScreen = ShowLootOnScreen()
@@ -135,7 +135,7 @@ function loadClientVersionItems()
 
 		g_things.loadOtb('items_versions/'..version..'/items.otb')
 		g_things.loadXml('items_versions/'..version..'/items.xml')
-    checkParserType(version)
+    checkParserType()
 
 		loadedVersionItems = version
 	end
@@ -284,12 +284,12 @@ function checkLootTextMessage(messageMode, message)
 	end
 end
 
-function checkParserType(version)
+function checkParserType()
   if g_things.findItemTypeByPluralName then
     ownParser = false
   else
     ownParser = ItemsXML()
-    ownParser:parseItemsXML('items_versions/' .. version .. '/items.xml')
+    ownParser:parseItemsXML(g_resources.readFileContents('items_versions/' .. g_game.getClientVersion() .. '/items.xml'))
   end
 end
 
