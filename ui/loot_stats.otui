@@ -35,7 +35,7 @@ MainWindow
   !text: tr('Loot Statistics')
   size: 550 515
   focusable: false
-  @onEscape: modules.loot_stats.ui.toggle()
+  @onEscape: ui:toggle()
 
   TabButton
     id: monstersTab
@@ -124,7 +124,7 @@ MainWindow
     width: 64
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    @onClick: modules.loot_stats.ui.toggle()
+    @onClick: ui:toggle()
 
   Button
     id: clearAllButton
@@ -132,7 +132,7 @@ MainWindow
     width: 64
     anchors.left: parent.left
     anchors.bottom: parent.bottom
-    @onClick: modules.loot_stats.clearAllUIAndTable()
+    @onClick: ui:clearData()
 
   Panel
     anchors.horizontalCenter: parent.horizontalCenter
@@ -140,8 +140,8 @@ MainWindow
     margin-bottom: 5
     height: 15
     width: 150
-    
+
     OptionCheckBox
       id: showLootOnScreen
       !text: tr('Show loot on screen')
-      @onMouseRelease: saveCheckboxIconsOnScreen()
+      @onMouseRelease: ui:saveCheckboxIconsOnScreen()
