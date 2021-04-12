@@ -22,9 +22,6 @@ function UI()
         end;
 
         terminate = function(self)
-            self.mainWindow:destroy()
-            self.moduleButton:destroy()
-
             self:clear()
         end;
 
@@ -32,8 +29,10 @@ function UI()
             -- Destroy created elements
             self:destroyListElements()
 
-            self.moduleButton = nil
+            self.mainWindow:destroy()
             self.mainWindow = nil
+            self.moduleButton:destroy()
+            self.moduleButton = nil
 
             self.elements = {}
         end;
