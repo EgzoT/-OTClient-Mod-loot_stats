@@ -16,10 +16,6 @@ function CreateStats()
             if (self.loadedVersionItems == 0 and g_game.getClientVersion() ~= 0) or (g_game.getClientVersion() ~= 0 and self.loadedVersionItems ~= g_game.getClientVersion()) then
                 self:loadClientVersionItems()
             end
-
-            -- Open monster tab as default
-            actualVisibleTab.tab = 'monster'
-            ui.elements.monstersTab:setOn(true)
         end;
 
         terminate = function(self)
@@ -73,7 +69,7 @@ function CreateStats()
                 self.ownParser = false
             else
                 self.ownParser = ItemsXML()
-                self.ownParser:parseItemsXML(readFileContents('items_versions/' .. g_game.getClientVersion() .. '/items.xml'))
+                self.ownParser:parseItemsXML('items_versions/' .. g_game.getClientVersion() .. '/items.xml')
             end
         end;
 

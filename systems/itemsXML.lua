@@ -3,9 +3,10 @@ function ItemsXML()
         isLoaded = false;
         items = {};
 
-        parseItemsXML = function(self, fileXML)
+        parseItemsXML = function(self, path)
             self.items = {}
 
+            local fileXML = readFileContents(path)
             local itemsXMLString = {}
 
             for line in fileXML:gmatch("[^\r\n]+") do

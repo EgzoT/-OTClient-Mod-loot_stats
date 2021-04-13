@@ -30,8 +30,6 @@ end
 --Scripts----------------------------------------
 -------------------------------------------------
 
-actualVisibleTab = { tab = 0, info = 0 }
-
 lootCheckerTable = {}
 
 function helpReturnLootCheckerTable()

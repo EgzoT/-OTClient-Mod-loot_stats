@@ -7,6 +7,8 @@ function UI()
 
         listElements = {};
 
+        actualVisibleTab = { tab = 0, info = 0 };
+
         init = function(self)
             g_ui.loadUI("loot_icons")
 
@@ -63,6 +65,10 @@ function UI()
 
         setDefaultValuesToElementsUI = function(self)
             self.elements.showLootOnScreen:setChecked(g_settings.getBoolean('loot_stats_addIconsToScreen'))
+
+            -- Open monster tab as default
+            self.actualVisibleTab.tab = 'monster'
+            self.elements.monstersTab:setOn(true)
         end;
 
         setOnChangeElements = function(self)
@@ -182,8 +188,8 @@ function UI()
                 itemTable = returnMonsterLoot(monsterName)
             end
 
-            actualVisibleTab.tab = 'loot'
-            actualVisibleTab.info = monsterName
+            self.actualVisibleTab.tab = 'loot'
+            self.actualVisibleTab.info = monsterName
 
             local layout = self.elements.itemsPanel:getLayout()
             layout:disableUpdates()
@@ -258,8 +264,8 @@ function UI()
             self:destroyListElements()
             self.elements.itemsPanel:destroyChildren()
 
-            actualVisibleTab.tab = 'monster'
-            actualVisibleTab.info = 0
+            self.actualVisibleTab.tab = 'monster'
+            self.actualVisibleTab.info = 0
 
             for a,b in pairs(returnAllMonsters()) do
                 self.listElements[a] = g_ui.createWidget('LootMonsterBox', self.elements.itemsPanel)
@@ -326,19 +332,19 @@ function UI()
         end;
 
         refreshListElements = function(self)
-            if actualVisibleTab.tab == 'loot' then
-                self:refreshLootItems(actualVisibleTab.info)
-                if actualVisibleTab.info ~= '*all' then
+            if self.actualVisibleTab.tab == 'loot' then
+                self:refreshLootItems(self.actualVisibleTab.info)
+                if self.actualVisibleTab.info ~= '*all' then
                     local creatureText = self.elements.panelCreatureView:getChildById('textCreatureView')
 
-                    local monster = returnAllMonsters()[actualVisibleTab.info]
-                    local text = actualVisibleTab.info .. '\n' .. 'Count: ' .. monster.count
+                    local monster = returnAllMonsters()[self.actualVisibleTab.info]
+                    local text = self.actualVisibleTab.info .. '\n' .. 'Count: ' .. monster.count
 
                     local chanceMonster = monster.count * 100 / returnAllMonsterCount()
                     text = text .. '\n' .. 'Chance: ' .. self:formatNumber(chanceMonster, 3, true) .. ' %'
                     creatureText:setText(text)
                 end
-            elseif actualVisibleTab.tab == 'monster' then
+            elseif self.actualVisibleTab.tab == 'monster' then
                 self:refreshLootMonsters()
             end
         end;
