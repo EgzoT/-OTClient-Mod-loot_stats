@@ -1,4 +1,5 @@
 dofile('monstersLootOutfit')
+dofile('showLootOnScreen')
 
 function UI()
     local ui = {
@@ -13,6 +14,7 @@ function UI()
 
         -- Additional modules
         monstersLootOutfit = MonstersLootOutfit();
+        showLootOnScreen = ShowLootOnScreen();
 
         init = function(self)
             g_ui.loadUI("loot_icons")
@@ -36,6 +38,9 @@ function UI()
 
             -- Terminate additional modules
             self.monstersLootOutfit:terminate()
+
+            -- Destroy created UI items on screen
+            self.showLootOnScreen:destroy()
         end;
 
         clear = function(self)

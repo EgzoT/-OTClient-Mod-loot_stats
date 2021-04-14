@@ -1,13 +1,11 @@
 -- Imports
 dofile('ui/ui')
 dofile('systems/createStats')
-dofile('ui/showLootOnScreen')
 dofile('systems/itemsXML')
 
 -- Modules
 ui = UI()
 createStats = CreateStats()
-showLootOnScreen = ShowLootOnScreen()
 
 function init()
   ui:init()
@@ -17,9 +15,6 @@ end
 function terminate()
   ui:terminate()
   createStats:terminate()
-
-  -- Destroy created UI items on screen
-  showLootOnScreen:destroy()
 end
 
 -------------------------------------------------

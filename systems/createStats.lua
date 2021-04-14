@@ -223,7 +223,7 @@ function CreateStats()
                 end
 
                 if ui.elements.showLootOnScreen:isChecked() then
-                    showLootOnScreen:add(lootToScreen)
+                    ui.showLootOnScreen:add(lootToScreen)
                 end
                 lootToScreen = {}
             end
