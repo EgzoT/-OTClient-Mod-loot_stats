@@ -12,15 +12,11 @@ showLootOnScreen = ShowLootOnScreen()
 function init()
   ui:init()
   createStats:init()
-
-  initEditMonstersLootOutfit()
 end
 
 function terminate()
   ui:terminate()
   createStats:terminate()
-
-  terminateEditMonstersLootOutfit()
 
   -- Destroy created UI items on screen
   showLootOnScreen:destroy()
@@ -42,40 +38,6 @@ function getParserType()
   else
     return "OTClient inbuild XML parser"
   end
-end
-
--------------------------------------------------
---Add monster outfit-----------------------------
--------------------------------------------------
-
-function initEditMonstersLootOutfit()
-  connect(Creature, {onDeath = editMonstersLootOutfit})
-end
-
-function terminateEditMonstersLootOutfit()
-  disconnect(Creature, {onDeath = editMonstersLootOutfit})
-end
-
-function editMonstersLootOutfit(creature)
-  scheduleEvent(function()
-    local name = creature:getName()
-    if lootCheckerTable[string.lower(name)] then
-      if not lootCheckerTable[string.lower(name)].outfit then
-        lootCheckerTable[string.lower(name)].outfit = creature:getOutfit()
-      end
-    --Ignore bracket [] text, fix for monster level systems
-    elseif string.find(name, '%[') and string.find(name, '%]') then
-      local nameWithoutBracket = string.sub(name, 0, string.find(name, '%[') - 1)
-      if string.sub(nameWithoutBracket, string.len(nameWithoutBracket)) == ' ' then
-        nameWithoutBracket = string.sub(name, 0, string.len(nameWithoutBracket) - 1)
-      end
-      if lootCheckerTable[string.lower(nameWithoutBracket)] then
-        if not lootCheckerTable[string.lower(nameWithoutBracket)].outfit then
-          lootCheckerTable[string.lower(nameWithoutBracket)].outfit = creature:getOutfit()
-        end
-      end
-    end
-  end, 1000)
 end
 
 -------------------------------------------------

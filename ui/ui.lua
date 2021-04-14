@@ -1,3 +1,5 @@
+dofile('monstersLootOutfit')
+
 function UI()
     local ui = {
         moduleButton = nil;
@@ -8,6 +10,9 @@ function UI()
         listElements = {};
 
         actualVisibleTab = { tab = 0, info = 0 };
+
+        -- Additional modules
+        monstersLootOutfit = MonstersLootOutfit();
 
         init = function(self)
             g_ui.loadUI("loot_icons")
@@ -21,10 +26,16 @@ function UI()
             self:loadElementsUI()
             self:setDefaultValuesToElementsUI()
             self:setOnChangeElements()
+
+            -- Init additional modules
+            self.monstersLootOutfit:init()
         end;
 
         terminate = function(self)
             self:clear()
+
+            -- Terminate additional modules
+            self.monstersLootOutfit:terminate()
         end;
 
         clear = function(self)
