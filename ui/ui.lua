@@ -29,18 +29,21 @@ function UI()
             self:setDefaultValuesToElementsUI()
             self:setOnChangeElements()
 
+            self:connectStoreWithElements()
+
             -- Init additional modules
             self.monstersLootOutfit:init()
+            self.showLootOnScreen:init()
         end;
 
         terminate = function(self)
             self:clear()
 
+            self:disconnectStoreFromElements()
+
             -- Terminate additional modules
             self.monstersLootOutfit:terminate()
-
-            -- Destroy created UI items on screen
-            self.showLootOnScreen:destroy()
+            self.showLootOnScreen:terminate()
         end;
 
         clear = function(self)
@@ -372,6 +375,22 @@ function UI()
                 g_settings.set('loot_stats_addIconsToScreen', false)
             else
                 g_settings.set('loot_stats_addIconsToScreen', true)
+            end
+        end;
+
+        -- Connect
+
+        connectStoreWithElements = function(self)
+            store.onRefreshLootStatsTable.changeUI = function() self:refreshLootStatsTable() end
+        end;
+
+        disconnectStoreFromElements = function(self)
+            store.onRefreshLootStatsTable.changeUI = nil
+        end;
+
+        refreshLootStatsTable = function(self)
+            if self.mainWindow:isVisible() then
+                self:refreshListElements()
             end
         end;
     }

@@ -2,8 +2,22 @@ function Store()
     local store = {
         lootStatsTable = {};
 
+        -- Events
+        onRefreshLootStatsTable = {};
+        onAddLootLog = {};
+
         clear = function(self)
             lootStatsTable = {}
+        end;
+
+        -- Events
+
+        refreshLootStatsTable = function(self)
+            signalcall(self.onRefreshLootStatsTable)
+        end;
+
+        addLootLog = function(self, lootData)
+            signalcall(self.onAddLootLog, lootData)
         end;
 
         -- Get data

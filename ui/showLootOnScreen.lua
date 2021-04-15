@@ -5,6 +5,16 @@ function ShowLootOnScreen()
         cacheLastTime = { t = 0, i = 1 };
         lootIconOnScreen = {};
 
+        init = function(self)
+            self:connectStoreWithElements()
+        end;
+
+        terminate = function(self)
+            self:disconnectStoreFromElements()
+
+            self:destroy()
+        end;
+
         add = function(self, tab)
             for i = 1, self.tableDepth do
                 self.mainScreenTab[i] = {}
@@ -105,6 +115,22 @@ function ShowLootOnScreen()
 
         getTopMenu = function(self)
             return modules.client_topmenu.getTopMenu()
+        end;
+
+        -- Connect
+
+        connectStoreWithElements = function(self)
+            store.onAddLootLog.showLootOnScreen = function(lootData) self:addLootLog(lootData) end
+        end;
+
+        disconnectStoreFromElements = function(self)
+            store.onAddLootLog.showLootOnScreen = nil
+        end;
+
+        addLootLog = function(self, lootData)
+            if ui.elements.showLootOnScreen:isChecked() then
+                self:add(lootData)
+            end
         end;
     }
 

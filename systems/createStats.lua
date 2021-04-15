@@ -222,15 +222,11 @@ function CreateStats()
                     end
                 end
 
-                if ui.elements.showLootOnScreen:isChecked() then
-                    ui.showLootOnScreen:add(lootToScreen)
-                end
+                store:addLootLog(lootToScreen)
                 lootToScreen = {}
             end
 
-            if ui.mainWindow:isVisible() then
-                ui:refreshListElements()
-            end
+            store:refreshLootStatsTable()
         end;
     }
 
