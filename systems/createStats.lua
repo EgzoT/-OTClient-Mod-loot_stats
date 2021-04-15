@@ -91,7 +91,7 @@ function CreateStats()
         -- Parse message logs
 
         returnPluralNameFromLoot = function(lootMonsterName, itemWord)
-            for a,b in pairs(lootCheckerTable[lootMonsterName].loot) do
+            for a,b in pairs(store.lootStatsTable[lootMonsterName].loot) do
                 if b.plural == itemWord then
                     return a
                 end
@@ -120,12 +120,12 @@ function CreateStats()
                 end
 
                 -- If no monster then add monster to table
-                if not lootCheckerTable[lootMonsterName] then
-                    lootCheckerTable[lootMonsterName] = { loot = {}, count = 0 }
+                if not store.lootStatsTable[lootMonsterName] then
+                    store.lootStatsTable[lootMonsterName] = { loot = {}, count = 0 }
                 end
 
                 -- Update monster kill count information
-                lootCheckerTable[lootMonsterName].count = lootCheckerTable[lootMonsterName].count + 1
+                store.lootStatsTable[lootMonsterName].count = store.lootStatsTable[lootMonsterName].count + 1
 
                 -- Return Loot
                 local lootString = string.sub(message, string.find(message, ': ') + 2, string.len(message))
@@ -160,9 +160,9 @@ function CreateStats()
                         local isPluralNameInLoot = self.returnPluralNameFromLoot(lootMonsterName, itemWord)
 
                         if isPluralNameInLoot then
-                            if not lootCheckerTable[lootMonsterName].loot[isPluralNameInLoot] then
-                                lootCheckerTable[lootMonsterName].loot[isPluralNameInLoot] = {}
-                                lootCheckerTable[lootMonsterName].loot[isPluralNameInLoot].count = 0
+                            if not store.lootStatsTable[lootMonsterName].loot[isPluralNameInLoot] then
+                                store.lootStatsTable[lootMonsterName].loot[isPluralNameInLoot] = {}
+                                store.lootStatsTable[lootMonsterName].loot[isPluralNameInLoot].count = 0
                             end
 
                             if not lootToScreen[isPluralNameInLoot] then
@@ -170,18 +170,18 @@ function CreateStats()
                                 lootToScreen[isPluralNameInLoot].count = 0
                             end
 
-                            lootCheckerTable[lootMonsterName].loot[isPluralNameInLoot].count = lootCheckerTable[lootMonsterName].loot[isPluralNameInLoot].count + itemCount
+                            store.lootStatsTable[lootMonsterName].loot[isPluralNameInLoot].count = store.lootStatsTable[lootMonsterName].loot[isPluralNameInLoot].count + itemCount
                             lootToScreen[isPluralNameInLoot].count = lootToScreen[isPluralNameInLoot].count + itemCount
                         else
                             local pluralNameToSingular = self:convertPluralToSingular(itemWord)
                             if pluralNameToSingular then
-                                if not lootCheckerTable[lootMonsterName].loot[pluralNameToSingular] then
-                                    lootCheckerTable[lootMonsterName].loot[pluralNameToSingular] = {}
-                                    lootCheckerTable[lootMonsterName].loot[pluralNameToSingular].count = 0
+                                if not store.lootStatsTable[lootMonsterName].loot[pluralNameToSingular] then
+                                    store.lootStatsTable[lootMonsterName].loot[pluralNameToSingular] = {}
+                                    store.lootStatsTable[lootMonsterName].loot[pluralNameToSingular].count = 0
                                 end
 
-                                if not lootCheckerTable[lootMonsterName].loot[pluralNameToSingular].plural then
-                                    lootCheckerTable[lootMonsterName].loot[pluralNameToSingular].plural = itemWord
+                                if not store.lootStatsTable[lootMonsterName].loot[pluralNameToSingular].plural then
+                                    store.lootStatsTable[lootMonsterName].loot[pluralNameToSingular].plural = itemWord
                                 end
 
                                 if not lootToScreen[pluralNameToSingular] then
@@ -189,12 +189,12 @@ function CreateStats()
                                     lootToScreen[pluralNameToSingular].count = 0
                                 end
 
-                                lootCheckerTable[lootMonsterName].loot[pluralNameToSingular].count = lootCheckerTable[lootMonsterName].loot[pluralNameToSingular].count + itemCount
+                                store.lootStatsTable[lootMonsterName].loot[pluralNameToSingular].count = store.lootStatsTable[lootMonsterName].loot[pluralNameToSingular].count + itemCount
                                 lootToScreen[pluralNameToSingular].count = lootToScreen[pluralNameToSingular].count + itemCount
                             else
-                                if not lootCheckerTable[lootMonsterName].loot[word] then
-                                    lootCheckerTable[lootMonsterName].loot[word] = {}
-                                    lootCheckerTable[lootMonsterName].loot[word].count = 0
+                                if not store.lootStatsTable[lootMonsterName].loot[word] then
+                                    store.lootStatsTable[lootMonsterName].loot[word] = {}
+                                    store.lootStatsTable[lootMonsterName].loot[word].count = 0
                                 end
 
                                 if not lootToScreen[word] then
@@ -202,14 +202,14 @@ function CreateStats()
                                     lootToScreen[word].count = 0
                                 end
 
-                                lootCheckerTable[lootMonsterName].loot[word].count = lootCheckerTable[lootMonsterName].loot[word].count + 1
+                                store.lootStatsTable[lootMonsterName].loot[word].count = store.lootStatsTable[lootMonsterName].loot[word].count + 1
                                 lootToScreen[word].count = lootToScreen[word].count + 1
                             end
                         end
                     else
-                        if not lootCheckerTable[lootMonsterName].loot[word] then
-                            lootCheckerTable[lootMonsterName].loot[word] = {}
-                            lootCheckerTable[lootMonsterName].loot[word].count = 0
+                        if not store.lootStatsTable[lootMonsterName].loot[word] then
+                            store.lootStatsTable[lootMonsterName].loot[word] = {}
+                            store.lootStatsTable[lootMonsterName].loot[word].count = 0
                         end
 
                         if not lootToScreen[word] then
@@ -217,7 +217,7 @@ function CreateStats()
                             lootToScreen[word].count = 0
                         end
 
-                        lootCheckerTable[lootMonsterName].loot[word].count = lootCheckerTable[lootMonsterName].loot[word].count + 1
+                        store.lootStatsTable[lootMonsterName].loot[word].count = store.lootStatsTable[lootMonsterName].loot[word].count + 1
                         lootToScreen[word].count = lootToScreen[word].count + 1
                     end
                 end

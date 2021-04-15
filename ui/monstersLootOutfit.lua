@@ -25,9 +25,9 @@ function MonstersLootOutfit()
         onLootMonsters = function(self, creature)
             scheduleEvent(function()
                 local name = creature:getName()
-                if lootCheckerTable[string.lower(name)] then
-                    if not lootCheckerTable[string.lower(name)].outfit then
-                        lootCheckerTable[string.lower(name)].outfit = creature:getOutfit()
+                if store.lootStatsTable[string.lower(name)] then
+                    if not store.lootStatsTable[string.lower(name)].outfit then
+                        store.lootStatsTable[string.lower(name)].outfit = creature:getOutfit()
                     end
                 -- Ignore bracket [] text, fix for monster level systems
                 elseif string.find(name, '%[') and string.find(name, '%]') then
@@ -36,9 +36,9 @@ function MonstersLootOutfit()
                         nameWithoutBracket = string.sub(name, 0, string.len(nameWithoutBracket) - 1)
                     end
 
-                    if lootCheckerTable[string.lower(nameWithoutBracket)] then
-                        if not lootCheckerTable[string.lower(nameWithoutBracket)].outfit then
-                            lootCheckerTable[string.lower(nameWithoutBracket)].outfit = creature:getOutfit()
+                    if store.lootStatsTable[string.lower(nameWithoutBracket)] then
+                        if not store.lootStatsTable[string.lower(nameWithoutBracket)].outfit then
+                            store.lootStatsTable[string.lower(nameWithoutBracket)].outfit = creature:getOutfit()
                         end
                     end
                 end

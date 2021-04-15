@@ -199,9 +199,9 @@ function UI()
         refreshLootItems = function(self, monsterName)
             local itemTable = {}
             if monsterName == '*all' then
-                itemTable = returnAllLoot()
+                itemTable = store:returnAllLoot()
             else
-                itemTable = returnMonsterLoot(monsterName)
+                itemTable = store:returnMonsterLoot(monsterName)
             end
 
             self.actualVisibleTab.tab = 'loot'
@@ -221,27 +221,27 @@ function UI()
                 if not b.plural then
                     local chanceToLoot = 0
                     if monsterName ~= '*all' then
-                        chanceToLoot = b.count * 100 / returnMonsterCount(monsterName)
+                        chanceToLoot = b.count * 100 / store:returnMonsterCount(monsterName)
                     else
-                        chanceToLoot = b.count * 100 / returnAllMonsterCount()
+                        chanceToLoot = b.count * 100 / store:returnAllMonsterCount()
                     end
                     text = text .. '\n' .. 'Chance: ' .. self:formatNumber(chanceToLoot, 3, true) .. ' %'
                 else
                     local chanceToLoot = 0
                     if monsterName ~= '*all' then
-                        if b.count > returnMonsterCount(monsterName) then
-                            chanceToLoot = b.count / returnMonsterCount(monsterName)
+                        if b.count > store:returnMonsterCount(monsterName) then
+                            chanceToLoot = b.count / store:returnMonsterCount(monsterName)
                             text = text .. '\n' .. 'Average: ' .. self:formatNumber(chanceToLoot, 3, true) .. ' / 1'
                         else
-                            chanceToLoot = b.count * 100 / returnMonsterCount(monsterName)
+                            chanceToLoot = b.count * 100 / store:returnMonsterCount(monsterName)
                             text = text .. '\n' .. 'Chance: ' .. self:formatNumber(chanceToLoot, 3, true) .. ' %'
                         end
                     else
-                        if b.count > returnAllMonsterCount() then
-                            chanceToLoot = b.count / returnAllMonsterCount()
+                        if b.count > store:returnAllMonsterCount() then
+                            chanceToLoot = b.count / store:returnAllMonsterCount()
                             text = text .. '\n' .. 'Average: ' .. self:formatNumber(chanceToLoot, 3, true) .. ' / 1'
                         else
-                            chanceToLoot = b.count * 100 / returnAllMonsterCount()
+                            chanceToLoot = b.count * 100 / store:returnAllMonsterCount()
                             text = text .. '\n' .. 'Chance: ' .. self:formatNumber(chanceToLoot, 3, true) .. ' %'
                         end
                     end
@@ -283,12 +283,12 @@ function UI()
             self.actualVisibleTab.tab = 'monster'
             self.actualVisibleTab.info = 0
 
-            for a,b in pairs(returnAllMonsters()) do
+            for a,b in pairs(store:returnAllMonsters()) do
                 self.listElements[a] = g_ui.createWidget('LootMonsterBox', self.elements.itemsPanel)
 
                 local text = a .. '\n' .. 'Count: ' .. b.count
 
-                local chanceMonster = b.count * 100 / returnAllMonsterCount()
+                local chanceMonster = b.count * 100 / store:returnAllMonsterCount()
                 text = text .. '\n' .. 'Chance: ' .. self:formatNumber(chanceMonster, 3, true) .. ' %'
 
                 self.listElements[a]:setText(text)
@@ -325,7 +325,7 @@ function UI()
                 self.elements.allLootTab:setOn(false)
                 self.elements.monstersTab:setOn(false)
                 self:hideMonsterView()
-                lootCheckerTable = {}
+                store.lootStatsTable = {}
 
                 layout:enableUpdates()
                 layout:update()
@@ -353,10 +353,10 @@ function UI()
                 if self.actualVisibleTab.info ~= '*all' then
                     local creatureText = self.elements.panelCreatureView:getChildById('textCreatureView')
 
-                    local monster = returnAllMonsters()[self.actualVisibleTab.info]
+                    local monster = store:returnAllMonsters()[self.actualVisibleTab.info]
                     local text = self.actualVisibleTab.info .. '\n' .. 'Count: ' .. monster.count
 
-                    local chanceMonster = monster.count * 100 / returnAllMonsterCount()
+                    local chanceMonster = monster.count * 100 / store:returnAllMonsterCount()
                     text = text .. '\n' .. 'Chance: ' .. self:formatNumber(chanceMonster, 3, true) .. ' %'
                     creatureText:setText(text)
                 end
