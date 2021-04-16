@@ -159,10 +159,10 @@ function UI()
             if mouseButton == MouseLeftButton then
                 self.elements.monstersTab:setOn(false)
 
-                self:showMonsterView(widget:getChildById('creature'):getCreature(), widget:getText())
+                self:showMonsterView(widget:getChildById('creature'):getCreature(), widget:getChildById('text'):getText())
 
                 local monsterName = ''
-                for word in string.gmatch(widget:getText(), '([^'..'\n'..']+)') do
+                for word in string.gmatch(widget:getChildById('text'):getText(), '([^'..'\n'..']+)') do
                     monsterName = word
                     break
                 end
