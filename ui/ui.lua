@@ -251,7 +251,7 @@ function UI()
                     end
                 end
 
-                self.listElements[a]:setText(text)
+                self.listElements[a]:getChildById('text'):setText(text)
 
                 local item = nil
                 local findItemByName = g_things.findItemTypeByName(a)
@@ -295,7 +295,7 @@ function UI()
                 local chanceMonster = b.count * 100 / store:returnAllMonsterCount()
                 text = text .. '\n' .. 'Chance: ' .. self:formatNumber(chanceMonster, 3, true) .. ' %'
 
-                self.listElements[a]:setText(text)
+                self.listElements[a]:getChildById('text'):setText(text)
 
                 local uiCreature = Creature.create()
                 uiCreature:setDirection(2)

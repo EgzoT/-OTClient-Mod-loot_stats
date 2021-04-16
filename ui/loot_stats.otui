@@ -13,6 +13,15 @@ LootItemBox < UICheckBox
     image-color: #ffffffff
     margin-top: 5
 
+  Label
+    id: text
+    text-align: center
+    color: #ffffff
+    anchors.top: item.bottom
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+
 LootMonsterBox < UICheckBox
   border-width: 1
   border-color: #000000
@@ -29,6 +38,15 @@ LootMonsterBox < UICheckBox
     anchors.horizontalCenter: parent.horizontalCenter
     image-color: #ffffffff
     margin-top: 5
+
+  Label
+    id: text
+    text-align: center
+    color: #ffffff
+    anchors.top: creature.bottom
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
 
 MainWindow
   id: lootStatsMain
