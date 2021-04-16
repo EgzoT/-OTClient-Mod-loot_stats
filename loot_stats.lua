@@ -1,23 +1,24 @@
 -- Imports
 dofile('data/store')
-dofile('ui/ui')
 dofile('systems/createStats')
+dofile('ui/ui')
 dofile('systems/itemsXML')
 
 -- Modules
 store = Store()
-ui = UI()
 createStats = CreateStats()
+ui = UI()
 
 function init()
-  ui:init()
+  store:init()
   createStats:init()
+  ui:init()
 end
 
 function terminate()
   ui:terminate()
   createStats:terminate()
-  store:clear()
+  store:terminate()
 end
 
 -- File system

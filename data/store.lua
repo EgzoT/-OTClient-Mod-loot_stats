@@ -2,9 +2,25 @@ function Store()
     local store = {
         lootStatsTable = {};
 
+        showLootOnScreen = nil;
+
         -- Events
         onRefreshLootStatsTable = {};
         onAddLootLog = {};
+
+        onChangeShowLootOnScreen = {};
+
+        init = function(self)
+            self:setDefaultData()
+        end;
+
+        terminate = function(self)
+            self:clear()
+        end;
+
+        setDefaultData = function(self)
+            self.showLootOnScreen = g_settings.getBoolean('loot_stats_addIconsToScreen')
+        end;
 
         clear = function(self)
             lootStatsTable = {}
@@ -18,6 +34,22 @@ function Store()
 
         addLootLog = function(self, lootData)
             signalcall(self.onAddLootLog, lootData)
+        end;
+
+        setShowLootOnScreen = function(self, checked)
+            if checked then
+                g_settings.set('loot_stats_addIconsToScreen', true)
+                self.showLootOnScreen = true
+                signalcall(self.onChangeShowLootOnScreen, true)
+            else
+                g_settings.set('loot_stats_addIconsToScreen', false)
+                self.showLootOnScreen = false
+                signalcall(self.onChangeShowLootOnScreen, false)
+            end
+        end;
+
+        getShowLootOnScreen = function(self)
+            return self.showLootOnScreen
         end;
 
         -- Get data

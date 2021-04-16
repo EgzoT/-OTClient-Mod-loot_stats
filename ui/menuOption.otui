@@ -1,0 +1,4 @@
+Panel
+  OptionCheckBox
+    id: showLootOnScreen
+    !text: tr('Show loot on screen')

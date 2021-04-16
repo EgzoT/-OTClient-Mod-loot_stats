@@ -1,5 +1,6 @@
 dofile('monstersLootOutfit')
 dofile('showLootOnScreen')
+dofile('menuOption')
 
 function UI()
     local ui = {
@@ -13,11 +14,12 @@ function UI()
         actualVisibleTab = { tab = 0, info = 0 };
 
         -- Additional modules
+        menuOption = MenuOption();
         monstersLootOutfit = MonstersLootOutfit();
         showLootOnScreen = ShowLootOnScreen();
 
         init = function(self)
-            g_ui.loadUI("loot_icons")
+            g_ui.loadUI('loot_icons')
 
             self.moduleButton = modules.client_topmenu.addRightGameToggleButton('lootStatsButton', tr('Loot Stats'), 'img/icon', function() self:toggle() end)
             self.moduleButton:setOn(false)
@@ -32,6 +34,7 @@ function UI()
             self:connectStoreWithElements()
 
             -- Init additional modules
+            self.menuOption:init()
             self.monstersLootOutfit:init()
             self.showLootOnScreen:init()
         end;
@@ -42,6 +45,7 @@ function UI()
             self:disconnectStoreFromElements()
 
             -- Terminate additional modules
+            self.menuOption:terminate()
             self.monstersLootOutfit:terminate()
             self.showLootOnScreen:terminate()
         end;
@@ -79,12 +83,9 @@ function UI()
             self.elements.monstersTab = self.mainWindow:recursiveGetChildById('monstersTab')
             self.elements.allLootTab = self.mainWindow:recursiveGetChildById('allLootTab')
             self.elements.panelCreatureView = self.mainWindow:recursiveGetChildById('panelCreatureView')
-            self.elements.showLootOnScreen = self.mainWindow:recursiveGetChildById('showLootOnScreen')
         end;
 
         setDefaultValuesToElementsUI = function(self)
-            self.elements.showLootOnScreen:setChecked(g_settings.getBoolean('loot_stats_addIconsToScreen'))
-
             -- Open monster tab as default
             self.actualVisibleTab.tab = 'monster'
             self.elements.monstersTab:setOn(true)
@@ -365,16 +366,6 @@ function UI()
                 end
             elseif self.actualVisibleTab.tab == 'monster' then
                 self:refreshLootMonsters()
-            end
-        end;
-
-        -- Options
-
-        saveCheckboxIconsOnScreen = function(self)
-            if self.elements.showLootOnScreen:isChecked() then
-                g_settings.set('loot_stats_addIconsToScreen', false)
-            else
-                g_settings.set('loot_stats_addIconsToScreen', true)
             end
         end;
 

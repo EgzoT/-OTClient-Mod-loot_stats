@@ -133,15 +133,3 @@ MainWindow
     anchors.left: parent.left
     anchors.bottom: parent.bottom
     @onClick: ui:clearData()
-
-  Panel
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.bottom: parent.bottom
-    margin-bottom: 5
-    height: 15
-    width: 150
-
-    OptionCheckBox
-      id: showLootOnScreen
-      !text: tr('Show loot on screen')
-      @onMouseRelease: ui:saveCheckboxIconsOnScreen()

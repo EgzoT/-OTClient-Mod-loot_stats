@@ -128,7 +128,7 @@ function ShowLootOnScreen()
         end;
 
         addLootLog = function(self, lootData)
-            if ui.elements.showLootOnScreen:isChecked() then
+            if store:getShowLootOnScreen() then
                 self:add(lootData)
             end
         end;
