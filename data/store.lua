@@ -2,13 +2,15 @@ function Store()
     local store = {
         lootStatsTable = {};
 
-        showLootOnScreen = nil;
+        showLootOnScreen = true;
+        amountLootOnScreen = 5;
 
         -- Events
         onRefreshLootStatsTable = {};
         onAddLootLog = {};
 
         onChangeShowLootOnScreen = {};
+        onChangeAmountLootOnScreen = {};
 
         init = function(self)
             self:setDefaultData()
@@ -20,6 +22,11 @@ function Store()
 
         setDefaultData = function(self)
             self.showLootOnScreen = g_settings.getBoolean('loot_stats_addIconsToScreen')
+            if g_settings.getNumber('loot_stats_amountLootOnScreen') > 0 and g_settings.getNumber('loot_stats_amountLootOnScreen') <= 20 then
+                self.amountLootOnScreen = g_settings.getNumber('loot_stats_amountLootOnScreen')
+            else
+                self.amountLootOnScreen = 5
+            end
         end;
 
         clear = function(self)
@@ -50,6 +57,23 @@ function Store()
 
         getShowLootOnScreen = function(self)
             return self.showLootOnScreen
+        end;
+
+        setAmountLootOnScreen = function(self, number)
+            number = tonumber(number)
+            if number > 0 and number <= 20 then
+                g_settings.set('loot_stats_amountLootOnScreen', number)
+                self.amountLootOnScreen = number
+                signalcall(self.onChangeAmountLootOnScreen, number)
+            else
+                g_settings.set('loot_stats_amountLootOnScreen', 5)
+                self.amountLootOnScreen = 5
+                signalcall(self.onChangeAmountLootOnScreen, 5)
+            end
+        end;
+
+        getAmountLootOnScreen = function(self)
+            return self.amountLootOnScreen
         end;
 
         -- Get data

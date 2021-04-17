@@ -1,7 +1,6 @@
 function ShowLootOnScreen()
     local showLootOnScreen = {
         mainScreenTab = {};
-        tableDepth = 5;
         cacheLastTime = { t = 0, i = 1 };
         lootIconOnScreen = {};
 
@@ -16,9 +15,9 @@ function ShowLootOnScreen()
         end;
 
         add = function(self, tab)
-            for i = 1, self.tableDepth do
+            for i = 1, store:getAmountLootOnScreen() do
                 self.mainScreenTab[i] = {}
-                if i + 1 <= self.tableDepth then
+                if i + 1 <= store:getAmountLootOnScreen() then
                     self.mainScreenTab[i] = self.mainScreenTab[i + 1]
                 else
                     if tab ~= nil then
