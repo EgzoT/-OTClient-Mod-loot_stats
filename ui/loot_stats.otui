@@ -143,11 +143,3 @@ MainWindow
     anchors.right: parent.right
     anchors.bottom: parent.bottom
     @onClick: ui:toggle()
-
-  Button
-    id: clearAllButton
-    !text: tr('Clear all')
-    width: 64
-    anchors.left: parent.left
-    anchors.bottom: parent.bottom
-    @onClick: ui:clearData()

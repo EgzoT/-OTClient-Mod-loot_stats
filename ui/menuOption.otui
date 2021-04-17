@@ -2,3 +2,11 @@ Panel
   OptionCheckBox
     id: showLootOnScreen
     !text: tr('Show loot on screen')
+
+  Button
+    id: clearData
+    !text: tr('Clear data')
+    width: 70
+    margin-top: 5
+    anchors.top: showLootOnScreen.bottom
+    anchors.left: parent.left

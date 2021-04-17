@@ -26,6 +26,7 @@ function MenuOption()
 
         loadElementsUI = function(self)
             self.elements.showLootOnScreen = self.optionPanel:recursiveGetChildById('showLootOnScreen')
+            self.elements.clearData = self.optionPanel:recursiveGetChildById('clearData')
         end;
 
         setDefaultValuesToElementsUI = function(self)
@@ -34,6 +35,7 @@ function MenuOption()
 
         setOnChangeElements = function(self)
             self.elements.showLootOnScreen.onMouseRelease = function(widget, mousePosition, mouseButton) store:setShowLootOnScreen(not widget:isChecked()) end
+            self.elements.clearData.onMouseRelease = function(widget, mousePosition, mouseButton) ui:clearData() end
         end;
     }
 
