@@ -8,7 +8,6 @@ Panel
 
   Label
     id: amountLootOnScreenLabel
-    !text: tr('The amount of loot on the screen: %s', 5)
     anchors.top: showLootOnScreen.bottom
     anchors.left: parent.left
     anchors.right: parent.right
@@ -24,10 +23,27 @@ Panel
     minimum: 1
     maximum: 20
 
+  Label
+    id: delayTimeLootOnScreenLabel
+    anchors.top: amountLootOnScreen.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 5
+
+  HorizontalScrollBar
+    id: delayTimeLootOnScreen
+    step: 100
+    anchors.top: delayTimeLootOnScreenLabel.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 5
+    minimum: 500
+    maximum: 10000
+
   Button
     id: clearData
     !text: tr('Clear data')
     width: 70
     margin-top: 15
-    anchors.top: amountLootOnScreen.bottom
+    anchors.top: delayTimeLootOnScreen.bottom
     anchors.left: parent.left

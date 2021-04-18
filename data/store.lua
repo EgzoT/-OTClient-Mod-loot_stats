@@ -4,6 +4,7 @@ function Store()
 
         showLootOnScreen = true;
         amountLootOnScreen = 5;
+        delayTimeLootOnScreen = 2000;
 
         -- Events
         onRefreshLootStatsTable = {};
@@ -11,6 +12,7 @@ function Store()
 
         onChangeShowLootOnScreen = {};
         onChangeAmountLootOnScreen = {};
+        onChangeDelayTimeLootOnScreen = {};
 
         init = function(self)
             self:setDefaultData()
@@ -26,6 +28,11 @@ function Store()
                 self.amountLootOnScreen = g_settings.getNumber('loot_stats_amountLootOnScreen')
             else
                 self.amountLootOnScreen = 5
+            end
+            if g_settings.getNumber('loot_stats_delayTimeLootOnScreen') >= 500 and g_settings.getNumber('loot_stats_delayTimeLootOnScreen') <= 10000 then
+                self.delayTimeLootOnScreen = g_settings.getNumber('loot_stats_delayTimeLootOnScreen')
+            else
+                self.delayTimeLootOnScreen = 2000
             end
         end;
 
@@ -74,6 +81,23 @@ function Store()
 
         getAmountLootOnScreen = function(self)
             return self.amountLootOnScreen
+        end;
+
+        setDelayTimeLootOnScreen = function(self, number)
+            number = tonumber(number)
+            if number >= 500 and number <= 10000 then
+                g_settings.set('loot_stats_delayTimeLootOnScreen', number)
+                self.delayTimeLootOnScreen = number
+                signalcall(self.onChangeDelayTimeLootOnScreen, number)
+            else
+                g_settings.set('loot_stats_delayTimeLootOnScreen', 5)
+                self.delayTimeLootOnScreen = 2000
+                signalcall(self.onChangeDelayTimeLootOnScreen, 2000)
+            end
+        end;
+
+        getDelayTimeLootOnScreen = function(self)
+            return self.delayTimeLootOnScreen
         end;
 
         -- Get data

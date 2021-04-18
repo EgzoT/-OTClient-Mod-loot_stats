@@ -59,7 +59,7 @@ function ShowLootOnScreen()
                         break
                     end
                 end
-            end, 2000)
+            end, store:getDelayTimeLootOnScreen())
         end;
 
         refresh = function(self)
