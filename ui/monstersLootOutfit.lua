@@ -30,15 +30,17 @@ function MonstersLootOutfit()
                         store.lootStatsTable[string.lower(name)].outfit = creature:getOutfit()
                     end
                 -- Ignore bracket [] text, fix for monster level systems
-                elseif string.find(name, '%[') and string.find(name, '%]') then
-                    local nameWithoutBracket = string.sub(name, 0, string.find(name, '%[') - 1)
-                    if string.sub(nameWithoutBracket, string.len(nameWithoutBracket)) == ' ' then
-                        nameWithoutBracket = string.sub(name, 0, string.len(nameWithoutBracket) - 1)
-                    end
+                elseif not store:getIgnoreMonsterLevelSystem() then
+                    if string.find(name, '%[') and string.find(name, '%]') then
+                        local nameWithoutBracket = string.sub(name, 0, string.find(name, '%[') - 1)
+                        if string.sub(nameWithoutBracket, string.len(nameWithoutBracket)) == ' ' then
+                            nameWithoutBracket = string.sub(name, 0, string.len(nameWithoutBracket) - 1)
+                        end
 
-                    if store.lootStatsTable[string.lower(nameWithoutBracket)] then
-                        if not store.lootStatsTable[string.lower(nameWithoutBracket)].outfit then
-                            store.lootStatsTable[string.lower(nameWithoutBracket)].outfit = creature:getOutfit()
+                        if store.lootStatsTable[string.lower(nameWithoutBracket)] then
+                            if not store.lootStatsTable[string.lower(nameWithoutBracket)].outfit then
+                                store.lootStatsTable[string.lower(nameWithoutBracket)].outfit = creature:getOutfit()
+                            end
                         end
                     end
                 end

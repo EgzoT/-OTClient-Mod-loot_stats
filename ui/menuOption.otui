@@ -1,14 +1,28 @@
 Panel
-  CheckBox
-    id: showLootOnScreen
-    !text: tr('Show the loot on the screen')
+  Label
+    text: Loot on screen options
+    color: #ffffff
     anchors.top: parent.top
     anchors.left: parent.left
     anchors.right: parent.right
 
+  HorizontalSeparator
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 4
+
+  CheckBox
+    id: showLootOnScreen
+    !text: tr('Show the loot on the screen')
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 10
+
   Label
     id: amountLootOnScreenLabel
-    anchors.top: showLootOnScreen.bottom
+    anchors.top: prev.bottom
     anchors.left: parent.left
     anchors.right: parent.right
     margin-top: 5
@@ -16,7 +30,7 @@ Panel
   HorizontalScrollBar
     id: amountLootOnScreen
     step: 1
-    anchors.top: amountLootOnScreenLabel.bottom
+    anchors.top: prev.bottom
     anchors.left: parent.left
     anchors.right: parent.right
     margin-top: 5
@@ -25,7 +39,7 @@ Panel
 
   Label
     id: delayTimeLootOnScreenLabel
-    anchors.top: amountLootOnScreen.bottom
+    anchors.top: prev.bottom
     anchors.left: parent.left
     anchors.right: parent.right
     margin-top: 5
@@ -33,17 +47,54 @@ Panel
   HorizontalScrollBar
     id: delayTimeLootOnScreen
     step: 100
-    anchors.top: delayTimeLootOnScreenLabel.bottom
+    anchors.top: prev.bottom
     anchors.left: parent.left
     anchors.right: parent.right
     margin-top: 5
     minimum: 500
     maximum: 10000
 
+  Label
+    text: Loot log options
+    color: #ffffff
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 15
+
+  HorizontalSeparator
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 4
+
+  CheckBox
+    id: ignoreMonsterLevelSystem
+    !text: tr('Ignore monster level system')
+    !tooltip: tr('When OFF - ignore level in bracket ("Monster [100]" -> "Monster")\nWhen ON don\'t ignore level in bracket ("Monster [100]" -> "Monster [100]")')
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 10
+
+  Label
+    text: Data actions
+    color: #ffffff
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 10
+
+  HorizontalSeparator
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 4
+
   Button
     id: clearData
     !text: tr('Clear data')
     width: 70
-    margin-top: 15
-    anchors.top: delayTimeLootOnScreen.bottom
+    margin-top: 10
+    anchors.top: prev.bottom
     anchors.left: parent.left

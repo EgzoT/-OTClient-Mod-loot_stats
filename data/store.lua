@@ -5,6 +5,7 @@ function Store()
         showLootOnScreen = true;
         amountLootOnScreen = 5;
         delayTimeLootOnScreen = 2000;
+        ignoreMonsterLevelSystem = false;
 
         -- Events
         onRefreshLootStatsTable = {};
@@ -13,6 +14,7 @@ function Store()
         onChangeShowLootOnScreen = {};
         onChangeAmountLootOnScreen = {};
         onChangeDelayTimeLootOnScreen = {};
+        onChangeIgnoreMonsterLevelSystem = {};
 
         init = function(self)
             self:setDefaultData()
@@ -34,6 +36,7 @@ function Store()
             else
                 self.delayTimeLootOnScreen = 2000
             end
+            self.ignoreMonsterLevelSystem = g_settings.getBoolean('loot_stats_ignoreMonsterLevelSystem')
         end;
 
         clear = function(self)
@@ -98,6 +101,22 @@ function Store()
 
         getDelayTimeLootOnScreen = function(self)
             return self.delayTimeLootOnScreen
+        end;
+
+        setIgnoreMonsterLevelSystem = function(self, checked)
+            if checked then
+                g_settings.set('loot_stats_ignoreMonsterLevelSystem', true)
+                self.ignoreMonsterLevelSystem = true
+                signalcall(self.onChangeIgnoreMonsterLevelSystem, true)
+            else
+                g_settings.set('loot_stats_ignoreMonsterLevelSystem', false)
+                self.ignoreMonsterLevelSystem = false
+                signalcall(self.onChangeIgnoreMonsterLevelSystem, false)
+            end
+        end;
+
+        getIgnoreMonsterLevelSystem = function(self)
+            return self.ignoreMonsterLevelSystem
         end;
 
         -- Get data

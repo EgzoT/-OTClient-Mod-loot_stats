@@ -37,6 +37,7 @@ function MenuOption()
             self.elements.amountLootOnScreen = self.optionPanel:recursiveGetChildById('amountLootOnScreen')
             self.elements.delayTimeLootOnScreenLabel = self.optionPanel:recursiveGetChildById('delayTimeLootOnScreenLabel')
             self.elements.delayTimeLootOnScreen = self.optionPanel:recursiveGetChildById('delayTimeLootOnScreen')
+            self.elements.ignoreMonsterLevelSystem = self.optionPanel:recursiveGetChildById('ignoreMonsterLevelSystem')
             self.elements.clearData = self.optionPanel:recursiveGetChildById('clearData')
         end;
 
@@ -46,6 +47,7 @@ function MenuOption()
             self.elements.amountLootOnScreen:setValue(store:getAmountLootOnScreen())
             self.elements.delayTimeLootOnScreenLabel:setText(tr('Time delay to delete loot from screen: %d', store:getDelayTimeLootOnScreen()))
             self.elements.delayTimeLootOnScreen:setValue(store:getDelayTimeLootOnScreen())
+            self.elements.ignoreMonsterLevelSystem:setChecked(store:getIgnoreMonsterLevelSystem())
         end;
 
         -- Connect
@@ -58,12 +60,14 @@ function MenuOption()
             store.onChangeShowLootOnScreen.onChangeUI = function(value) self:onChangeStoreShowLootOnScreen(value) end
             store.onChangeAmountLootOnScreen.onChangeUI = function(value) self:onChangeStoreAmountLootOnScreen(value) end
             store.onChangeDelayTimeLootOnScreen.onChangeUI = function(value) self:onChangeStoreDelayTimeLootOnScreen(value) end
+            store.onChangeIgnoreMonsterLevelSystem.onChangeUI = function(value) self:onChangeStoreIgnoreMonsterLevelSystem(value) end
         end;
 
         connectElementsWithStore = function(self)
-            self.elements.showLootOnScreen.onMouseRelease = function(widget, mousePosition, mouseButton) store:setShowLootOnScreen(not widget:isChecked()) end
+            self.elements.showLootOnScreen.onMouseRelease = function(widget, mousePosition, mouseButton) self:onChangeUIShowLootOnScreen(widget, mousePosition, mouseButton) end
             self.elements.amountLootOnScreen.onValueChange = function(widget, value) self:onChangeUIAmountLootOnScreen(widget, value) end
             self.elements.delayTimeLootOnScreen.onValueChange = function(widget, value) self:onChangeUIDelayTimeLootOnScreen(widget, value) end
+            self.elements.ignoreMonsterLevelSystem.onMouseRelease = function(widget, mousePosition, mouseButton) self:onChangeUIIgnoreMonsterLevelSystem(widget, mousePosition, mouseButton) end
         end;
 
         -- Disconnect
@@ -76,15 +80,23 @@ function MenuOption()
             store.onChangeShowLootOnScreen.onChangeUI = nil
             store.onChangeAmountLootOnScreen.onChangeUI = nil
             store.onChangeDelayTimeLootOnScreen.onChangeUI = nil
+            store.onChangeIgnoreMonsterLevelSystem.onChangeUI = nil
         end;
 
         disconnectElementsWithStore = function(self)
             self.elements.showLootOnScreen.onMouseRelease = nil
             self.elements.amountLootOnScreen.onValueChange = nil
             self.elements.delayTimeLootOnScreen.onValueChange = nil
+            self.elements.ignoreMonsterLevelSystem.onMouseRelease = nil
         end;
 
         -- On UI change
+
+        onChangeUIShowLootOnScreen = function(self, widget, mousePosition, mouseButton)
+            local newValue = widget:isChecked()
+            widget:setChecked(newValue)
+            store:setShowLootOnScreen(newValue)
+        end;
 
         onChangeUIAmountLootOnScreen = function(self, widget, value)
             self.elements.amountLootOnScreenLabel:setText(tr('The amount of loot on the screen: %d', value))
@@ -94,6 +106,12 @@ function MenuOption()
         onChangeUIDelayTimeLootOnScreen = function(self, widget, value)
             self.elements.delayTimeLootOnScreenLabel:setText(tr('Time delay to delete loot from screen: %d', value))
             store:setDelayTimeLootOnScreen(value)
+        end;
+
+        onChangeUIIgnoreMonsterLevelSystem = function(self, widget, mousePosition, mouseButton)
+            local newValue = widget:isChecked()
+            widget:setChecked(newValue)
+            store:setIgnoreMonsterLevelSystem(newValue)
         end;
 
         -- On store change
@@ -108,6 +126,10 @@ function MenuOption()
 
         onChangeStoreDelayTimeLootOnScreen = function(self, value)
             self.elements.delayTimeLootOnScreen:setValue(value)
+        end;
+
+        onChangeStoreIgnoreMonsterLevelSystem = function(self, value)
+            self.elements.ignoreMonsterLevelSystem:setChecked(value)
         end;
     }
 
