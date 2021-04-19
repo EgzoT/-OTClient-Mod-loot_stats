@@ -6,6 +6,7 @@ function Store()
         amountLootOnScreen = 5;
         delayTimeLootOnScreen = 2000;
         ignoreMonsterLevelSystem = false;
+        ignoreLastSignWhenDot = false;
 
         -- Events
         onRefreshLootStatsTable = {};
@@ -15,6 +16,7 @@ function Store()
         onChangeAmountLootOnScreen = {};
         onChangeDelayTimeLootOnScreen = {};
         onChangeIgnoreMonsterLevelSystem = {};
+        onChangeIgnoreLastSignWhenDot = {};
 
         init = function(self)
             self:setDefaultData()
@@ -37,6 +39,7 @@ function Store()
                 self.delayTimeLootOnScreen = 2000
             end
             self.ignoreMonsterLevelSystem = g_settings.getBoolean('loot_stats_ignoreMonsterLevelSystem')
+            self.ignoreLastSignWhenDot = g_settings.getBoolean('loot_stats_ignoreLastSignWhenDot')
         end;
 
         clear = function(self)
@@ -117,6 +120,22 @@ function Store()
 
         getIgnoreMonsterLevelSystem = function(self)
             return self.ignoreMonsterLevelSystem
+        end;
+
+        setIgnoreLastSignWhenDot = function(self, checked)
+            if checked then
+                g_settings.set('loot_stats_ignoreLastSignWhenDot', true)
+                self.ignoreLastSignWhenDot = true
+                signalcall(self.onChangeIgnoreLastSignWhenDot, true)
+            else
+                g_settings.set('loot_stats_ignoreLastSignWhenDot', false)
+                self.ignoreLastSignWhenDot = false
+                signalcall(self.onChangeIgnoreLastSignWhenDot, false)
+            end
+        end;
+
+        getIgnoreLastSignWhenDot = function(self)
+            return self.ignoreLastSignWhenDot
         end;
 
         -- Get data

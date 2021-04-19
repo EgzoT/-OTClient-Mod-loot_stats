@@ -129,9 +129,12 @@ function CreateStats()
 
                 -- Return Loot
                 local lootString = string.sub(message, string.find(message, ': ') + 2, string.len(message))
+
                 -- If dot at the ned of sentence (OTS only), delete it
-                if string.sub(lootString, string.len(lootString)) == '.' then
-                    lootString = string.sub(lootString, 0, string.len(lootString) - 1)
+                if not store:getIgnoreLastSignWhenDot() then
+                    if string.sub(lootString, string.len(lootString)) == '.' then
+                        lootString = string.sub(lootString, 0, string.len(lootString) - 1)
+                    end
                 end
 
                 local lootToScreen = {}

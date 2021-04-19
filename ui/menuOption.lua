@@ -38,6 +38,7 @@ function MenuOption()
             self.elements.delayTimeLootOnScreenLabel = self.optionPanel:recursiveGetChildById('delayTimeLootOnScreenLabel')
             self.elements.delayTimeLootOnScreen = self.optionPanel:recursiveGetChildById('delayTimeLootOnScreen')
             self.elements.ignoreMonsterLevelSystem = self.optionPanel:recursiveGetChildById('ignoreMonsterLevelSystem')
+            self.elements.ignoreLastSignWhenDot = self.optionPanel:recursiveGetChildById('ignoreLastSignWhenDot')
             self.elements.clearData = self.optionPanel:recursiveGetChildById('clearData')
         end;
 
@@ -48,12 +49,13 @@ function MenuOption()
             self.elements.delayTimeLootOnScreenLabel:setText(tr('Time delay to delete loot from screen: %d', store:getDelayTimeLootOnScreen()))
             self.elements.delayTimeLootOnScreen:setValue(store:getDelayTimeLootOnScreen())
             self.elements.ignoreMonsterLevelSystem:setChecked(store:getIgnoreMonsterLevelSystem())
+            self.elements.ignoreLastSignWhenDot:setChecked(store:getIgnoreLastSignWhenDot())
         end;
 
         -- Connect
 
         connectElements = function(self)
-            self.elements.clearData.onMouseRelease = function(widget, mousePosition, mouseButton) ui:clearData() end
+            self.elements.clearData.onClick = function(widget) ui:clearData() end
         end;
 
         connectStoreWithElements = function(self)
@@ -61,19 +63,21 @@ function MenuOption()
             store.onChangeAmountLootOnScreen.onChangeUI = function(value) self:onChangeStoreAmountLootOnScreen(value) end
             store.onChangeDelayTimeLootOnScreen.onChangeUI = function(value) self:onChangeStoreDelayTimeLootOnScreen(value) end
             store.onChangeIgnoreMonsterLevelSystem.onChangeUI = function(value) self:onChangeStoreIgnoreMonsterLevelSystem(value) end
+            store.onChangeIgnoreLastSignWhenDot.onChangeUI = function(value) self:onChangeStoreIgnoreLastSignWhenDot(value) end
         end;
 
         connectElementsWithStore = function(self)
-            self.elements.showLootOnScreen.onMouseRelease = function(widget, mousePosition, mouseButton) self:onChangeUIShowLootOnScreen(widget, mousePosition, mouseButton) end
+            self.elements.showLootOnScreen.onClick = function(widget) self:onChangeUIShowLootOnScreen(widget) end
             self.elements.amountLootOnScreen.onValueChange = function(widget, value) self:onChangeUIAmountLootOnScreen(widget, value) end
             self.elements.delayTimeLootOnScreen.onValueChange = function(widget, value) self:onChangeUIDelayTimeLootOnScreen(widget, value) end
-            self.elements.ignoreMonsterLevelSystem.onMouseRelease = function(widget, mousePosition, mouseButton) self:onChangeUIIgnoreMonsterLevelSystem(widget, mousePosition, mouseButton) end
+            self.elements.ignoreMonsterLevelSystem.onClick = function(widget) self:onChangeUIIgnoreMonsterLevelSystem(widget) end
+            self.elements.ignoreLastSignWhenDot.onClick = function(widget) self:onChangeUIIgnoreLastSignWhenDot(widget) end
         end;
 
         -- Disconnect
 
         disconnectElements = function(self)
-            self.elements.clearData.onMouseRelease = nil
+            self.elements.clearData.onClick = nil
         end;
 
         disconnectStoreFromElements = function(self)
@@ -81,19 +85,21 @@ function MenuOption()
             store.onChangeAmountLootOnScreen.onChangeUI = nil
             store.onChangeDelayTimeLootOnScreen.onChangeUI = nil
             store.onChangeIgnoreMonsterLevelSystem.onChangeUI = nil
+            store.onChangeIgnoreLastSignWhenDot.onChangeUI = nil
         end;
 
         disconnectElementsWithStore = function(self)
-            self.elements.showLootOnScreen.onMouseRelease = nil
+            self.elements.showLootOnScreen.onClick = nil
             self.elements.amountLootOnScreen.onValueChange = nil
             self.elements.delayTimeLootOnScreen.onValueChange = nil
-            self.elements.ignoreMonsterLevelSystem.onMouseRelease = nil
+            self.elements.ignoreMonsterLevelSystem.onClick = nil
+            self.elements.ignoreLastSignWhenDot.onClick = nil
         end;
 
         -- On UI change
 
-        onChangeUIShowLootOnScreen = function(self, widget, mousePosition, mouseButton)
-            local newValue = widget:isChecked()
+        onChangeUIShowLootOnScreen = function(self, widget)
+            local newValue = not widget:isChecked()
             widget:setChecked(newValue)
             store:setShowLootOnScreen(newValue)
         end;
@@ -108,10 +114,16 @@ function MenuOption()
             store:setDelayTimeLootOnScreen(value)
         end;
 
-        onChangeUIIgnoreMonsterLevelSystem = function(self, widget, mousePosition, mouseButton)
-            local newValue = widget:isChecked()
+        onChangeUIIgnoreMonsterLevelSystem = function(self, widget)
+            local newValue = not widget:isChecked()
             widget:setChecked(newValue)
             store:setIgnoreMonsterLevelSystem(newValue)
+        end;
+
+        onChangeUIIgnoreLastSignWhenDot = function(self, widget)
+            local newValue = not widget:isChecked()
+            widget:setChecked(newValue)
+            store:setIgnoreLastSignWhenDot(newValue)
         end;
 
         -- On store change
@@ -130,6 +142,10 @@ function MenuOption()
 
         onChangeStoreIgnoreMonsterLevelSystem = function(self, value)
             self.elements.ignoreMonsterLevelSystem:setChecked(value)
+        end;
+
+        onChangeStoreIgnoreLastSignWhenDot = function(self, value)
+            self.elements.ignoreLastSignWhenDot:setChecked(value)
         end;
     }
 

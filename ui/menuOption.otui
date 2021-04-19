@@ -77,6 +77,15 @@ Panel
     anchors.right: parent.right
     margin-top: 10
 
+  CheckBox
+    id: ignoreLastSignWhenDot
+    !text: tr('Ignore last sign when dot')
+    !tooltip: tr('When OFF delete last character in log, when it is dot.\nWhen ON don\'t delete last character in log, when it is dot.')
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 5
+
   Label
     text: Data actions
     color: #ffffff
